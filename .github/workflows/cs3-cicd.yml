@@ -1,6 +1,3 @@
-cd ~/cs3/cs3-qa-monitoring
-
-cat > .github/workflows/cs3-cicd.yml <<'EOF'
 name: CS3 CI/CD Pipeline
 
 on:
@@ -110,4 +107,3 @@ jobs:
       - name: Show running containers
         run: |
           docker ps
-EOF
