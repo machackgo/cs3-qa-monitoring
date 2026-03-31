@@ -1,0 +1,105 @@
+name: CS3 CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-and-verify:
+    runs-on: [self-hosted, linux, x64, cs3]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Runner info
+        run: |
+          echo "Runner is working"
+          whoami
+          hostname
+          pwd
+
+      - name: Show repository structure
+        run: |
+          ls -la
+          ls -la qa-local
+          ls -la qa-api
+          ls -la monitoring
+
+      - name: Check Docker
+        run: |
+          docker --version
+          docker compose version
+          docker ps
+
+      - name: Deploy qa-local
+        run: |
+          cd qa-local
+          docker compose down || true
+          docker compose up -d --build
+          docker compose ps
+
+      - name: Deploy qa-api
+        run: |
+          cd qa-api
+          docker compose down || true
+          docker compose up -d --build
+          docker compose ps
+
+      - name: Deploy monitoring
+        run: |
+          cd monitoring
+          docker compose down || true
+          docker compose up -d
+          docker compose ps
+
+      - name: Reconnect Prometheus to app networks
+        run: |
+          docker network connect qa-api_default cs3-prometheus || true
+          docker network connect qa-local_default cs3-prometheus || true
+
+      - name: Wait for services
+        run: |
+          sleep 20
+
+      - name: Check qa-local health
+        run: |
+          curl -f http://127.0.0.1:22034/health
+
+      - name: Check qa-api health
+        run: |
+          curl -f http://127.0.0.1:22014/health
+
+      - name: Check qa-local metrics
+        run: |
+          curl -f http://127.0.0.1:22104/metrics | grep qa_local
+
+      - name: Check qa-api metrics
+        run: |
+          curl -f http://127.0.0.1:22114/metrics | grep qa_api
+
+      - name: Check node-exporter metrics
+        run: |
+          curl -f http://127.0.0.1:22125/metrics | grep node_
+
+      - name: Check Prometheus ready
+        run: |
+          curl -f http://127.0.0.1:22124/-/ready
+
+      - name: Check Prometheus targets
+        run: |
+          curl -s http://127.0.0.1:22124/api/v1/targets > targets.json
+          cat targets.json | head -200
+          grep -q '"health":"up"' targets.json
+
+      - name: Check Prometheus logs for Grafana remote_write errors
+        run: |
+          docker logs cs3-prometheus --tail 200 > prometheus.log 2>&1 || true
+          cat prometheus.log
+          ! grep -Ei "401|403|unauthorized|forbidden|remote write.*failed|non-recoverable error|server returned HTTP status" prometheus.log
+
+      - name: Show running containers
+        run: |
+          docker ps
