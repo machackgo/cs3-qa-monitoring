@@ -24,9 +24,10 @@ jobs:
       - name: Show repository structure
         run: |
           ls -la
-          ls -la qa-local
-          ls -la qa-api
-          ls -la monitoring
+          ls -la /home/group04/cs3/cs3-qa-monitoring
+          ls -la /home/group04/cs3/cs3-qa-monitoring/qa-local
+          ls -la /home/group04/cs3/cs3-qa-monitoring/qa-api
+          ls -la /home/group04/cs3/cs3-qa-monitoring/monitoring
 
       - name: Check Docker
         run: |
@@ -36,21 +37,21 @@ jobs:
 
       - name: Deploy qa-local
         run: |
-          cd qa-local
+          cd /home/group04/cs3/cs3-qa-monitoring/qa-local
           docker compose down || true
           docker compose up -d --build
           docker compose ps
 
       - name: Deploy qa-api
         run: |
-          cd qa-api
+          cd /home/group04/cs3/cs3-qa-monitoring/qa-api
           docker compose down || true
           docker compose up -d --build
           docker compose ps
 
       - name: Deploy monitoring
         run: |
-          cd monitoring
+          cd /home/group04/cs3/cs3-qa-monitoring/monitoring
           docker compose down || true
           docker compose up -d
           docker compose ps
