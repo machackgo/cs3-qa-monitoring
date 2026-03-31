@@ -1,3 +1,6 @@
+cd ~/cs3/cs3-qa-monitoring
+
+cat > .github/workflows/cs3-cicd.yml <<'EOF'
 name: CS3 CI/CD Pipeline
 
 on:
@@ -95,12 +98,16 @@ jobs:
           cat targets.json | head -200
           grep -q '"health":"up"' targets.json
 
-      - name: Check Prometheus logs for Grafana remote_write errors
+      - name: Check Prometheus logs for fresh Grafana remote_write errors
         run: |
-          docker logs cs3-prometheus --tail 200 > prometheus.log 2>&1 || true
+          docker logs cs3-prometheus --since 2m > prometheus.log 2>&1 || true
           cat prometheus.log
-          ! grep -Ei "401|403|unauthorized|forbidden|remote write.*failed|non-recoverable error|server returned HTTP status" prometheus.log
+          if grep -Ei "401|403|unauthorized|forbidden|remote write.*failed|non-recoverable error|server returned HTTP status" prometheus.log; then
+            echo "Fresh Grafana remote_write/auth error found"
+            exit 1
+          fi
 
       - name: Show running containers
         run: |
           docker ps
+EOF
