@@ -1,0 +1,18 @@
+services:
+  backend:
+    image: machackgo/qa-api-backend:latest
+    container_name: qa-api-backend
+    ports:
+      - "22014:9004"
+    env_file:
+      - /home/group04/qa.env
+
+  frontend:
+    image: machackgo/qa-api-frontend:latest
+    container_name: qa-api-frontend
+    environment:
+      BACKEND_URL: http://backend:9004
+    ports:
+      - "22004:7004"
+    depends_on:
+      - backend

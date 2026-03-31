@@ -1,0 +1,18 @@
+services:
+  backend:
+    image: machackgo/qa-local-backend:latest
+    container_name: qa-local-backend
+    ports:
+      - "22034:9044"
+
+  frontend:
+    image: machackgo/qa-local-frontend:latest
+    container_name: qa-local-frontend
+    environment:
+      BACKEND_URL: http://backend:9044
+    ports:
+      - "22024:7044"
+    depends_on:
+      - backend
+
+

@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: "qa-local-backend"
+    static_configs:
+      - targets: ["qa-local-backend:9104"]
+
+  - job_name: "qa-api-backend"
+    static_configs:
+      - targets: ["qa-api-backend:9101"]
+
+  - job_name: "node-exporter"
+    static_configs:
+      - targets: ["cs3-node-exporter:9100"]
+remote_write:
+  - url: "YOUR_GRAFANA_CLOUD_REMOTE_WRITE_URL"
+    basic_auth:
+      username: "YOUR_GRAFANA_CLOUD_USERNAME"
+      password: "YOUR_GRAFANA_CLOUD_TOKEN"

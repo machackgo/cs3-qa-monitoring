@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: qa-local-backend
+    container_name: qa-local-backend
+    ports:
+      - "22034:9044"
+      - "22104:9104"
+
+  frontend:
+    image: qa-local-frontend
+    container_name: qa-local-frontend
+    environment:
+      BACKEND_URL: http://backend:9044
+    ports:
+      - "22024:7044"
+    depends_on:
+      - backend
