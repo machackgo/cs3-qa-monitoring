@@ -13,8 +13,9 @@ scrape_configs:
   - job_name: "node-exporter"
     static_configs:
       - targets: ["cs3-node-exporter:9100"]
+
 remote_write:
   - url: "YOUR_GRAFANA_CLOUD_REMOTE_WRITE_URL"
     basic_auth:
       username: "YOUR_GRAFANA_CLOUD_USERNAME"
-      password: "YOUR_GRAFANA_CLOUD_TOKEN"
+      password: "YOUR_GRAFANA_CLOUD_API_TOKEN"

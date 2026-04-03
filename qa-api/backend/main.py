@@ -9,7 +9,7 @@ from prometheus_client import Counter, Histogram, start_http_server
 
 app = FastAPI(title="qa-api backend", version="1.0")
 
-MODEL_ID = "deepset/bert-base-uncased-squad2"
+MODEL_ID = "google-bert/bert-large-uncased-whole-word-masking-finetuned-squad"
 HF_TOKEN = os.getenv("HF_TOKEN", "").strip()
 
 client = None

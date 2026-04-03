@@ -1,0 +1,15 @@
+services:
+  github-runner:
+    image: myoung34/github-runner:latest
+    container_name: cs3-github-runner
+    restart: unless-stopped
+    environment:
+      REPO_URL: "https://github.com/machackgo/cs3-qa-monitoring"
+      RUNNER_NAME: "cs3-runner"
+      RUNNER_WORKDIR: "/tmp/github-runner"
+      RUNNER_TOKEN: "A4E2SCEXPOOKE6KNPE44TBLJZMU6W"
+      LABELS: "self-hosted,linux,x64,cs3"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/group04/cs3:/home/group04/cs3
+      - /home/group04:/home/group04

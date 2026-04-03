@@ -7,7 +7,7 @@ from prometheus_client import Counter, Histogram, start_http_server
 
 app = FastAPI(title="qa-local backend", version="1.0")
 
-MODEL_ID = "deepset/bert-base-uncased-squad2"
+MODEL_ID = "google-bert/bert-large-uncased-whole-word-masking-finetuned-squad"
 qa_pipe = None
 
 # Prometheus metrics
