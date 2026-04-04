@@ -3,23 +3,20 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    image: qa-api-backend
+    image: qa-api-backend-local
     container_name: qa-api-backend
     ports:
-      - "22014:9004"
-      - "22114:9101"
+      - "22082:9004"
+      - "22084:9101"
     env_file:
       - /home/group04/qa.env
 
   frontend:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    image: qa-api-frontend
+    image: machackgo/qa-api-frontend:latest
     container_name: qa-api-frontend
     environment:
       BACKEND_URL: http://backend:9004
     ports:
-      - "22004:7004"
+      - "22080:7004"
     depends_on:
       - backend

@@ -67,31 +67,31 @@ jobs:
 
       - name: Check qa-local health
         run: |
-          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22034/health
+          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22083/health
 
       - name: Check qa-api health
         run: |
-          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22014/health
+          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22082/health
 
       - name: Check qa-local metrics
         run: |
-          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22104/metrics | grep qa_local
+          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22085/metrics | grep qa_local
 
       - name: Check qa-api metrics
         run: |
-          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22114/metrics | grep qa_api
+          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22084/metrics | grep qa_api
 
       - name: Check node-exporter metrics
         run: |
-          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22125/metrics | grep node_
+          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22087/metrics | grep node_
 
       - name: Check Prometheus ready
         run: |
-          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22124/-/ready
+          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22086/-/ready
 
       - name: Check Prometheus targets
         run: |
-          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22124/api/v1/targets > targets.json
+          docker run --rm --network host curlimages/curl:8.10.1 -fsS http://127.0.0.1:22086/api/v1/targets > targets.json
           cat targets.json | head -200
           grep -q '"health":"up"' targets.json
 

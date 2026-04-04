@@ -1,17 +1,20 @@
 services:
   backend:
-    image: qa-local-backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: qa-local-backend-local
     container_name: qa-local-backend
     ports:
-      - "22034:9044"
-      - "22104:9104"
+      - "22083:9044"
+      - "22085:9104"
 
   frontend:
-    image: qa-local-frontend
+    image: machackgo/qa-local-frontend:latest
     container_name: qa-local-frontend
     environment:
       BACKEND_URL: http://backend:9044
     ports:
-      - "22024:7044"
+      - "22081:7044"
     depends_on:
       - backend

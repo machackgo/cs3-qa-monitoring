@@ -3,7 +3,7 @@ services:
     image: prom/prometheus:latest
     container_name: cs3-prometheus
     ports:
-      - "22124:9090"
+      - "22086:9090"
     volumes:
       - /home/group04/prometheus-live.yml:/etc/prometheus/prometheus.yml:ro
       - /home/group04/prometheus-data:/prometheus
@@ -18,4 +18,4 @@ services:
     volumes:
       - '/:/host:ro,rslave'
     ports:
-      - "22125:9100"
+      - "22087:9100"
