@@ -381,6 +381,3 @@ GitHub: [machackgo](https://github.com/machackgo)
 
 ---
 
-## License
-
-Add license information if applicable.
